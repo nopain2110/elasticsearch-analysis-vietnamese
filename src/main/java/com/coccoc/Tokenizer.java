@@ -1,11 +1,8 @@
 package com.coccoc;
 
 import com.alibaba.fastjson.JSON;
-import com.coccoc.jni.NativeSegmentResult;
-import com.coccoc.jni.NativeToken;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Rewrite class com.coccoc.Tokenizer for Elasticsearch integration.
@@ -58,17 +55,7 @@ public class Tokenizer {
         }
         String jsonSegmentRes = segmentJson(text, forTransforming, tokenizeOption, keepPunctuation);
         NativeSegmentResult segmentResult = JSON.parseObject(jsonSegmentRes, NativeSegmentResult.class);
-        List<NativeToken> nativeTokens = segmentResult.getTokens();
-
-        final List<Token> tokens = nativeTokens.stream().map(
-                nativeToken -> new Token(
-                        nativeToken.getText(),
-                        Token.Type.fromInt(nativeToken.getType()),
-                        Token.SegType.fromInt(nativeToken.getSegType()),
-                        nativeToken.getOriginalStart(),
-                        nativeToken.getOriginalEnd()
-                )
-        ).collect(Collectors.toList());
+        List<Token> tokens = segmentResult.getTokens();
 
         if (forTransforming && tokenizeOption == TokenizeOption.NORMAL.value()) {
             tokens.add(Token.FULL_STOP);

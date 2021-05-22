@@ -225,4 +225,16 @@ public final class Token implements Cloneable {
 	public boolean isWordOrNumber() {
 		return isWord() || isNumber() || isSiteUrl();
 	}
+
+	public void setSegType(SegType segType) {
+		this.segType = segType;
+	}
+
+	public void setSplittedByDot(boolean splittedByDot) {
+		this.splittedByDot = splittedByDot;
+	}
+
+	public int getStartPos() {
+		return startPos;
+	}
 }
